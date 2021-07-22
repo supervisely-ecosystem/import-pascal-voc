@@ -71,6 +71,8 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
     #g.my_app.stop()
 
 
+#@TODO: add progress bar for sly.upload_project
+
 def main():
     sly.logger.info(
         "Script arguments",
