@@ -1,14 +1,13 @@
 import os
-import sys
 import shutil
+import init_ui
 import requests
 import globals as g
 import pascal_importer
+import init_ui_progress
 import supervisely_lib as sly
 from supervisely_lib.io.fs import download, file_exists
 
-import init_ui
-import init_ui_progress
 
 @g.my_app.callback("import_pascal_voc")
 @sly.timeit

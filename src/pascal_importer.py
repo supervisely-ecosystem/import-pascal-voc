@@ -4,7 +4,6 @@ import globals as g
 import init_ui_progress
 
 import supervisely_lib as sly
-from supervisely_lib.io.json import load_json_file
 
 
 # returns mapping: (r, g, b) color -> some (row, col) for each unique color except black

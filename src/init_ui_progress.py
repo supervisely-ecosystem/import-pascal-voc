@@ -1,4 +1,3 @@
-
 import supervisely_lib as sly
 from functools import partial
 
@@ -12,7 +11,7 @@ def init_progress(data, state):
 
 
 def reset_progress(api, task_id):
-    _set_progress(api, task_id, None, 0, 0, 0, 0)
+    _set_progress(api, task_id, None, 0, 0)
 
 
 def _set_progress(api, task_id, message, current, total):
