@@ -61,17 +61,28 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
 
     import pascal_importer
     pascal_importer.main(state)
+
     proj_dir = os.path.join(g.storage_dir, "SLY_PASCAL")
 
-    #dir_size = sly.fs.get_directory_size(proj_dir)
-    #progress_project_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, f'Uploading project"', dir_size)
-    sly.upload_project(dir=proj_dir, api=api, workspace_id=g.workspace_id, project_name=state["resultingProjectName"], log_progress=False)
+    files = []
+    for r, d, f in os.walk(proj_dir):
+        for file in f:
+            files.append(os.path.join(r, file))
+    total_files = len(files)-1  # meta.json
 
-    api.task.set_field(task_id, "data.started", False)
-    #g.my_app.stop()
+    progress_project_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, f'Uploading project"', total_files)
+    sly.upload_project(dir=proj_dir, api=api, workspace_id=state["workspaceId"], project_name=state["resultingProjectName"],
+                       log_progress=False, progress_cb=progress_project_cb)
 
+    fields = [
+        {"field": "data.started", "payload": False},
+        {"field": "data.finished", "payload": True},
+    ]
+    api.task.set_fields(task_id, fields)
 
-#@TODO: add progress bar for sly.upload_project
+    g.my_app.show_modal_window(f"'{state['resultingProjectName']}' project has been successfully imported.")
+    g.my_app.stop()
+
 
 def main():
     sly.logger.info(

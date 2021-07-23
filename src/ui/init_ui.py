@@ -1,5 +1,6 @@
 def init(data, state):
     data["started"] = False
+    data["finished"] = False
     state["mode"] = "custom"  # "public" "custom"
     state["samplePercent"] = 100
 

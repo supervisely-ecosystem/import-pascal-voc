@@ -28,8 +28,6 @@
         height: auto; line-height: normal; border-radius: 4px; }
     </sly-style>
 
-    {{state.mode}}
-
     <sly-card class="mt15" title="Import Mode" subtitle="Choose whether to import public or custom data">
         <el-tabs class="el-tabs-cards" type="border-card" v-model="state.mode">
             <el-tab-pane label="public" name="public">
@@ -70,7 +68,8 @@
                 </el-radio>
                 <sly-field title="Path to Custom Data"
                            description="Copy path to your Pascal custom data from Team Files and paste it to input field.">
-                    <el-input v-model="state.customDataPath" :disabled="data.started" placeholder="Path to custom data in Team Files"></el-input>
+                    <el-input v-model="state.customDataPath" :disabled="data.started"
+                              placeholder="Path to custom data in Team Files"></el-input>
                 </sly-field>
             </el-tab-pane>
         </el-tabs>
@@ -89,7 +88,7 @@
 
             <div class="fflex mt10">
                 <el-button
-                        :disabled="!state.resultingProjectName"
+                        :disabled="!state.resultingProjectName || data.finished"
                         type="primary"
                         :loading="data.started"
                         @click="data.started = true; command('import_pascal_voc')"
@@ -100,7 +99,8 @@
                 </div>
                 <div class="ml10" v-if="data.started === true && state.resultingProjectName">
                     <div>{{data.progressName}} {{data.currentProgress}} / {{data.totalProgress}}</div>
-                    <el-progress :percentage="Math.round(data.currentProgress * 100 / data.totalProgress)"></el-progress>
+                    <el-progress
+                            :percentage="Math.round(data.currentProgress * 100 / data.totalProgress)"></el-progress>
                 </div>
             </div>
         </sly-card>
