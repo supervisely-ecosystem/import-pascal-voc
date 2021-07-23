@@ -20,8 +20,9 @@ ui_sources_dir = os.path.join(source_path, "ui")
 sys.path.append(ui_sources_dir)
 sly.logger.info(f"Added to sys.path: {ui_sources_dir}")
 
-import init_ui
-import init_ui_progress
+from ui import init_ui, init_ui_progress
+#import init_ui
+#import init_ui_progress
 
 @g.my_app.callback("import_pascal_voc")
 @sly.timeit
