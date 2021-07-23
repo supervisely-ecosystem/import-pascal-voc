@@ -61,7 +61,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
             files.append(os.path.join(r, file))
     total_files = len(files)-1  # meta.json
 
-    progress_project_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, f'Uploading project"', total_files)
+    progress_project_cb = init_ui_progress.get_progress_cb(api, task_id, f'Uploading project"', total_files)
     sly.upload_project(dir=proj_dir, api=api, workspace_id=state["workspaceId"], project_name=state["resultingProjectName"],
                        log_progress=False, progress_cb=progress_project_cb)
 
