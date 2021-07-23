@@ -1,10 +1,9 @@
 import os
 import sys
 import shutil
-import init_ui
 import requests
 import globals as g
-import init_ui_progress
+import pascal_importer
 from pathlib import Path
 import supervisely_lib as sly
 from supervisely_lib.io.fs import download, file_exists
@@ -15,6 +14,8 @@ ui_sources_dir = os.path.join(source_path, "ui")
 sys.path.append(ui_sources_dir)
 sly.logger.info(f"Added to sys.path: {ui_sources_dir}")
 
+import init_ui
+import init_ui_progress
 
 @g.my_app.callback("import_pascal_voc")
 @sly.timeit
@@ -59,9 +60,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
             os.rename(os.path.join(g.storage_dir, "VOCdevkit", "VOC"),
                       os.path.join(g.storage_dir, "VOCdevkit", "VOC2012"))
 
-    import pascal_importer
     pascal_importer.main(state)
-
     proj_dir = os.path.join(g.storage_dir, "SLY_PASCAL")
 
     files = []
