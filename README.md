@@ -85,22 +85,19 @@ The files train.txt, val.txt and trainval.txt list the image identifiers for the
 
 **Step 2**: Run app from `Team` `Plugins & Apps` page.
 
-<img src="https://i.imgur.com/0DqaKq1.png" width="600px"/>
-
-
 ## How to use
 
 App can import original and custom Pascal VOC dataset.
 
-1. To import original dataset - select `Public Data` in the gui and check datasets that you want to import. App will download and import pascal data.
-2. To import custom dataset - select `Custom Data`, upload custom dataset to `Team` -> `Files` copy path to your dataset and paste it to the text input in the app gui.
+**1. To import original dataset** - select `Public Data` in the gui and check datasets that you want to import. App will download and import pascal data.
 
-<img src="https://i.imgur.com/wrmRPyX.png"/>
+<img src="https://i.imgur.com/Khn18Cc.png"/>
 
-App creates task in `workspace tasks` list. Once app is finished, you will see download link to resulting tar archive. 
+**2. To import custom dataset** - select `Custom Data`, upload custom dataset to `Team` -> `Files` copy path to your dataset and paste it to the text input in the app gui.
 
-<img src="https://i.imgur.com/MTjig3H.png"/>
+<img src="https://i.imgur.com/OmcJfik.png"/>
 
-Resulting archive is saved in : 
 
-`Current Team` -> `Files` -> `/pascal_voc_format/<task_id>/<project_id>_<project_name>_pascal_format.tar`. 
+**Resulting project will be saved to selected `Team` -> `Workspace`**
+
+<img src="https://i.imgur.com/l16W14R.png"/>
