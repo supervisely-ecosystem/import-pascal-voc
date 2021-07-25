@@ -1,7 +1,7 @@
 <div align="center" markdown>
 <img src="https://i.imgur.com/HgSP0bG.png"/>
 
-# Export to Pascal VOC
+# Import Pascal VOC
 
 <p align="center">
   <a href="#Overview">Overview</a> •
