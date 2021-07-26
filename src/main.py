@@ -18,20 +18,20 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
             if not file_exists(trainval_archive):
                 response = requests.head(g.pascal_train_val_dl_link, allow_redirects=True)
                 sizeb = int(response.headers.get('content-length', 0))
-                progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, "Download 'VOCtrainval_11-May-2012.tar'", sizeb, is_size=True)
-                download(g.pascal_train_val_dl_link, trainval_archive, progress=progress_cb)
+                progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, "Download VOCtrainval_11-May-2012.tar", sizeb, is_size=True)
+                download(g.pascal_train_val_dl_link, trainval_archive, cache=g.my_app.cache, progress=progress_cb)
                 init_ui_progress.reset_progress(g.api, g.task_id)
-                app_logger.info('"VOCtrainval_11-May-2012.tar" has been successfully downloaded')
+                app_logger.info('VOCtrainval_11-May-2012.tar has been successfully downloaded')
             shutil.unpack_archive(trainval_archive, g.storage_dir, format="tar")
         if state["test"]:
             test_archive = os.path.join(g.storage_dir, "VOC2012test.tar")
             if not file_exists(test_archive):
                 response = requests.head(g.pascal_test_dl_link, allow_redirects=True)
                 sizeb = int(response.headers.get('content-length', 0))
-                progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, "Download 'VOC2012test.tar'", sizeb, is_size=True)
-                download(g.pascal_test_dl_link, test_archive, progress=progress_cb)
+                progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, "Download VOC2012test.tar", sizeb, is_size=True)
+                download(g.pascal_test_dl_link, test_archive, cache=g.my_app.cache, progress=progress_cb)
                 init_ui_progress.reset_progress(g.api, g.task_id)
-                app_logger.info('"VOC2012test.tar" has been successfully downloaded')
+                app_logger.info('VOC2012test.tar has been successfully downloaded')
             shutil.unpack_archive(test_archive, g.storage_dir, format="tar")
     else:
         remote_dir = state["customDataPath"]

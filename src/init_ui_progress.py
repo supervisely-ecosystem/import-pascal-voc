@@ -14,17 +14,20 @@ def reset_progress(api, task_id):
     _set_progress(api, task_id, None, 0, 0)
 
 
-def _set_progress(api, task_id, message, current, total):
+def _set_progress(api, task_id, message, current_label, total_label, current, total):
     fields = [
-        {"field": f"data.progressName", "payload": message},
-        {"field": f"data.currentProgress", "payload": current},
-        {"field": f"data.totalProgress", "payload": total},
+        {"field": "data.progressName", "payload": message},
+        {"field": "data.currentProgressLabel", "payload": current_label},
+        {"field": "data.totalProgressLabel", "payload": total_label},
+        {"field": "data.currentProgress", "payload": current},
+        {"field": "data.totalProgress", "payload": total},
     ]
     api.task.set_fields(task_id, fields)
 
 
 def _update_progress_ui(api, task_id, progress: sly.Progress):
-    _set_progress(api, task_id, progress.message, progress.current, progress.total)
+    _set_progress(api, task_id, progress.message, progress.current_label, progress.total_label, progress.current, progress.total)
+
 
 
 def update_progress(count, api: sly.Api, task_id, progress: sly.Progress):

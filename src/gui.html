@@ -28,15 +28,15 @@
         height: auto; line-height: normal; border-radius: 4px; }
     </sly-style>
 
-    <sly-card class="mt15" title="Import Mode" subtitle="Choose whether to import public or custom data">
+    <sly-card class="mt15" title="Import" subtitle="Choose whether to import public or custom data">
         <el-tabs class="el-tabs-cards" type="border-card" v-model="state.mode">
             <el-tab-pane label="public" name="public">
                 <el-radio v-model="state.mode" slot="label" label="public">
                     Public Data
                     <div>Import public Pascal VOC 2012 dataset</div>
                 </el-radio>
-                <sly-field title="Check Pascal Datasets to import"
-                           description="Select which Pascal dataset you want to import.">
+                <sly-field title="Select Datasets"
+                           description="Public Pascal VOC has several predefined splits">
                     <div class="mt5">
                         <el-checkbox v-model="state.trainval" label="trainval"></el-checkbox>
                     </div>
@@ -49,9 +49,9 @@
                     <div class="mt5">
                         <el-checkbox v-model="state.test" label="test"></el-checkbox>
                     </div>
-                    <div class="mt7">
+                    <div class="mt15">
                         <sly-field title="Sample Percent"
-                                   description="Select which percent of Pascal data you want to import.">
+                                   description="Percent of data for every split above">
                             <el-slider v-model="state.samplePercent" :min="0" :max="100" :step="1" show-input
                                        style="width: 500px;"
                                        show-input>
@@ -97,8 +97,10 @@
                 </el-button>
                 <div class="ml5" v-if="!state.resultingProjectName" style="color: red"> Enter name for resulting project
                 </div>
+            </div>
+            <div v-if="data.progressName" class="mt10">
                 <div class="ml10" v-if="data.started === true && state.resultingProjectName">
-                    <div>{{data.progressName}} {{data.currentProgress}} / {{data.totalProgress}}</div>
+                    <div>{{data.progressName}} {{data.currentProgressLabel}} / {{data.totalProgressLabel}}</div>
                     <el-progress
                             :percentage="Math.round(data.currentProgress * 100 / data.totalProgress)"></el-progress>
                 </div>

@@ -3,7 +3,7 @@ def init(data, state):
     data["finished"] = False
 
     state["mode"] = "public"
-    state["samplePercent"] = 100
+    state["samplePercent"] = 10
     state["trainval"] = True
     state["train"] = True
     state["val"] = True
