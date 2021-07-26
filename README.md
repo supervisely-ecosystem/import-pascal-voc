@@ -26,7 +26,7 @@ Converts [Pascal VOC](http://host.robots.ox.ac.uk/pascal/VOC/) format to [Superv
 #### Custom Pascal VOC archive must have the following structure:
 ```
 .
-└── custom_pascal_project.tar
+└── custom_pascal.tar
     └── VOCdevkit
         └── VOC or VOC2012
             ├── Annotations
