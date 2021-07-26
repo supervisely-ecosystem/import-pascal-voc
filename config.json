@@ -10,6 +10,6 @@
   "gui_template": "src/gui.html",
   "task_location": "application_sessions",
   "isolate": true,
-  "icon": "https://i.imgur.com/TxR0dfX.png",
+  "icon": "https://i.imgur.com/Zf4pt9R.png",
   "icon_background": "#FFFFFF"
 }
