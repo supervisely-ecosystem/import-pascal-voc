@@ -9,6 +9,14 @@ import supervisely_lib as sly
 from supervisely_lib.io.fs import download, file_exists
 
 
+def pascal_downloader(link, save_path, file_name):
+    response = requests.head(link, allow_redirects=True)
+    sizeb = int(response.headers.get('content-length', 0))
+    progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, f"Download {file_name}", sizeb, is_size=True)
+    download(g.pascal_train_val_dl_link, save_path, cache=g.my_app.cache, progress=progress_cb)
+    init_ui_progress.reset_progress(g.api, g.task_id)
+
+
 @g.my_app.callback("import_pascal_voc")
 @sly.timeit
 def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
@@ -16,21 +24,13 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
         if state["trainval"] or state["train"] or state["val"]:
             trainval_archive = os.path.join(g.storage_dir, "VOCtrainval_11-May-2012.tar")
             if not file_exists(trainval_archive):
-                response = requests.head(g.pascal_train_val_dl_link, allow_redirects=True)
-                sizeb = int(response.headers.get('content-length', 0))
-                progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, "Download VOCtrainval_11-May-2012.tar", sizeb, is_size=True)
-                download(g.pascal_train_val_dl_link, trainval_archive, cache=g.my_app.cache, progress=progress_cb)
-                init_ui_progress.reset_progress(g.api, g.task_id)
+                pascal_downloader(g.pascal_train_val_dl_link, trainval_archive, "VOCtrainval_11-May-2012.tar")
                 app_logger.info('VOCtrainval_11-May-2012.tar has been successfully downloaded')
             shutil.unpack_archive(trainval_archive, g.storage_dir, format="tar")
         if state["test"]:
             test_archive = os.path.join(g.storage_dir, "VOC2012test.tar")
             if not file_exists(test_archive):
-                response = requests.head(g.pascal_test_dl_link, allow_redirects=True)
-                sizeb = int(response.headers.get('content-length', 0))
-                progress_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, "Download VOC2012test.tar", sizeb, is_size=True)
-                download(g.pascal_test_dl_link, test_archive, cache=g.my_app.cache, progress=progress_cb)
-                init_ui_progress.reset_progress(g.api, g.task_id)
+                pascal_downloader(g.pascal_test_dl_link, test_archive, "VOC2012test.tar")
                 app_logger.info('VOC2012test.tar has been successfully downloaded')
             shutil.unpack_archive(test_archive, g.storage_dir, format="tar")
     else:
@@ -52,7 +52,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
             os.rename(os.path.join(g.storage_dir, "VOCdevkit", "VOC"),
                       os.path.join(g.storage_dir, "VOCdevkit", "VOC2012"))
 
-    pascal_importer.main(state)
+    pascal_importer.start(state)
     proj_dir = os.path.join(g.storage_dir, "SLY_PASCAL")
 
     files = []

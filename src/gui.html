@@ -52,10 +52,13 @@
                     <div class="mt15">
                         <sly-field title="Sample Percent"
                                    description="Percent of data for every split above">
-                            <el-slider v-model="state.samplePercent" :min="0" :max="100" :step="1" show-input
-                                       style="width: 500px;"
-                                       show-input>
-                            </el-slider>
+                            <div class="fflex">
+                                <el-slider v-model="state.samplePercent" :min="0" :max="100" :step="1" show-input
+                                           style="width: 500px;"
+                                           show-input>
+                                </el-slider>
+                                <span class="ml5">%</span>
+                            </div>
                         </sly-field>
                     </div>
                 </sly-field>
@@ -80,12 +83,10 @@
 
             <sly-select-team-workspace :team-id.sync="state.teamId"
                                        :workspace-id.sync="state.workspaceId"></sly-select-team-workspace>
-
             <sly-field title="Project Name"
-                       description="Name of the resulting Project.">
+                       description="If project name already exists in selected workspace, a number will be added to the end of the name. e.g. my_project -> my_project_001">
                 <el-input v-model="state.resultingProjectName" placeholder="my_Project"></el-input>
             </sly-field>
-
             <div class="fflex mt10">
                 <el-button
                         :disabled="!state.resultingProjectName || data.finished"

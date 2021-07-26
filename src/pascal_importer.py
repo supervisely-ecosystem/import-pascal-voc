@@ -153,6 +153,8 @@ class ImporterPascalVOCSegm:
                     continue
             ds = out_project.create_dataset(ds_name)
             percent_counter = 0
+            if state["mode"] == "custom":
+                state["samplePercent"] = 100
             sample_percent = int(len(sample_names) * (state["samplePercent"] / 100))
             progress_items_cb = init_ui_progress.get_progress_cb(g.api, g.task_id, f'Converting dataset: "{ds_name}"', sample_percent)
             for sample_name in sample_names:
@@ -191,11 +193,7 @@ class ImporterPascalVOCSegm:
         sly.logger.info('Pascal VOC samples processing is done.', extra={})
 
 
-def main(state):
+def start(state):
     importer = ImporterPascalVOCSegm()
     importer.convert(state)
     sly.report_import_finished()
-
-
-if __name__ == '__main__':
-    sly.main_wrapper('PASCAL_VOC_IMPORT', main)
