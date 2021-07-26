@@ -80,7 +80,10 @@ lemon 81 198 170
 
 <img src="https://i.imgur.com/ZII5d70.png"/>
 
+You can access result project by clicking on it's name in the `output` section of GUI.
 
-**Resulting project will be saved to selected `Team` -> `Workspace`**
+<img src="https://i.imgur.com/WwmeoLV.png"/>
+
+Resulting project will be saved to selected `Team` -> `Workspace`
 
 <img src="https://i.imgur.com/l16W14R.png"/>
