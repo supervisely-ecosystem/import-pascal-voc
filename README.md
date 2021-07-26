@@ -1,5 +1,5 @@
 <div align="center" markdown>
-<img src="https://i.imgur.com/HgSP0bG.png"/>
+<img src="https://i.imgur.com/ykox2iS.png"/>
 
 # Import Pascal VOC
 
@@ -55,7 +55,7 @@ lemon 81 198 170
 
 **Step 2**: Run app from `Team` `Plugins & Apps` page.
 
-<img src="https://i.imgur.com/Khn18Cc.png"/>
+<img src="https://i.imgur.com/tmmVKlI.png"/>
 
 ## How to use
 
@@ -69,7 +69,7 @@ lemon 81 198 170
 4. Select destination `Team`, `Workspace` and `Project name`
 5. Press `Run`
 
-<img src="https://i.imgur.com/Khn18Cc.png"/>
+<img src="https://i.imgur.com/bBStzR2.png"/>
 
 **2. To import custom dataset** - select `Custom Data`, upload custom dataset to `Team` -> `Files` copy path to your dataset and paste it to the text input in the app gui.
 
@@ -78,7 +78,7 @@ lemon 81 198 170
 3. Select destination `Team`, `Workspace` and `Project name`
 4. Press `Run`
 
-<img src="https://i.imgur.com/OmcJfik.png"/>
+<img src="https://i.imgur.com/ZII5d70.png"/>
 
 
 **Resulting project will be saved to selected `Team` -> `Workspace`**
