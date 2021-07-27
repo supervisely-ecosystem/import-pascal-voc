@@ -1,7 +1,7 @@
 import os
 import supervisely_lib as sly
 
-my_app = sly.AppService()
+my_app = sly.AppService(ignore_task_id=True)
 api: sly.Api = my_app.public_api
 
 task_id = my_app.task_id
