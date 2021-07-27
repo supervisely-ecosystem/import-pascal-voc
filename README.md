@@ -84,8 +84,11 @@ Once app is started, new task will appear in workspace tasks. Wait for message `
 
 1. Select `Custom Data`
 2. Input path to your data from `Team` -> `Files`
-3. Select destination `Team`, `Workspace` and `Project name`
-4. Press `Run`
+
+<img src="https://i.imgur.com/YemDSqY.gif" width="700"/>
+
+4. Select destination `Team`, `Workspace` and `Project name`
+5. Press `Run`
 
 <img src="https://i.imgur.com/ZII5d70.png"/>
 
