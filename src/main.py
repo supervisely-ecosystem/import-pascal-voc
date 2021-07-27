@@ -74,8 +74,8 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
     ]
     api.task.set_fields(task_id, fields)
 
+    api.task.set_output_project(g.my_app.task_id, res_project_id, res_project_name)
     g.my_app.show_modal_window(f"'{state['resultingProjectName']}' project has been successfully imported.")
-    #api.task.set_output_project(task_id, res_project_id, res_project_name)
     g.my_app.stop()
 
 
