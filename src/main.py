@@ -59,7 +59,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
     progress_project_cb = init_ui_progress.get_progress_cb(api, task_id, f'Uploading project"', total_files)
     res_project_id, res_project_name = sly.upload_project(dir=proj_dir,
                                                           api=api,
-                                                          workspace_id=state["workspaceId"],
+                                                          workspace_id=g.workspace_id,
                                                           project_name=state["resultingProjectName"],
                                                           log_progress=False,
                                                           progress_cb=progress_project_cb)
@@ -74,6 +74,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
     ]
     api.task.set_fields(task_id, fields)
 
+    api.task.set_output_project(g.my_app.task_id, res_project_id, res_project_name)
     g.my_app.show_modal_window(f"'{state['resultingProjectName']}' project has been successfully imported.")
     g.my_app.stop()
 

@@ -78,9 +78,6 @@
 
     <div class="mt10">
         <sly-card title="Output project">
-
-            <sly-select-team-workspace :team-id.sync="state.teamId"
-                                       :workspace-id.sync="state.workspaceId"></sly-select-team-workspace>
             <sly-field title="Project Name"
                        description="If project name already exists in selected workspace, a number will be added to the end of the name. e.g. my_project -> my_project_001">
                 <el-input v-model="state.resultingProjectName" placeholder="my_Project"></el-input>
