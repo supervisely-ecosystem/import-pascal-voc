@@ -69,8 +69,8 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
         {"field": "data.started", "payload": False},
         {"field": "data.finished", "payload": True},
         {"field": "data.resultProject", "payload": res_project_name},
-        {"field": "data.resultProjectId", "payload": res_project_id,},
-        {"field": "data.resultProjectPreviewUrl", "payload": api.image.preview_url(res_project.reference_image_url, 100, 100)},
+        {"field": "data.resultProjectId", "payload": res_project_id},
+        {"field": "data.resultProjectPreviewUrl", "payload": api.image.preview_url(res_project.reference_image_url, 100, 100)}
     ]
     api.task.set_fields(task_id, fields)
 
