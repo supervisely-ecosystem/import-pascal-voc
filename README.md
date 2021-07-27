@@ -39,7 +39,7 @@ Converts [Pascal VOC](http://host.robots.ox.ac.uk/pascal/VOC/) format to [Superv
             └── colors.txt
 ```
 
-**`colors.txt`** file is custom, and not provided in the original Pascal VOC Dataset. File contains information about instance mask colors associated with classes in Pascal VOC format. This file is required by this app, if you are uploading custom dataset. Each line of `colors.txt` file starts with `class_name` and ends with `RGB` values that represents class color. `class name` and each of `RBG` values are divided by `space`.
+**`colors.txt`** file is custom, and not provided in the original Pascal VOC Dataset. File contains information about instance mask colors associated with classes in Pascal VOC format. This file is required by this app, if you are uploading custom dataset. Each line of `colors.txt` file starts with `class_name` and ends with `RGB` values that represent class color.
 
 **`colors.txt`** example:
 ```txt
@@ -53,7 +53,7 @@ lemon 81 198 170
 ## How To Run 
 **Step 1**: Add app to your team from [Ecosystem](https://ecosystem.supervise.ly/apps/import-pascal-voc) if it is not there.
 
-**Step 2**: Run app from `Team` `Plugins & Apps` page.
+**Step 2**: Run app from `Team` -> `Plugins & Apps` page.
 
 <img src="https://i.imgur.com/tmmVKlI.png"/>
 
