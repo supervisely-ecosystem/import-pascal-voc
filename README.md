@@ -55,7 +55,16 @@ lemon 81 198 170
 
 **Step 2**: Run app from `Team` -> `Plugins & Apps` page.
 
+After running the app you will be redirected to the `Tasks` page.
+
 <img src="https://i.imgur.com/tmmVKlI.png"/>
+
+
+**Step 3**: Waiting until the app is started.
+
+Once app is started, new task will appear in workspace tasks. Wait for message `Application is started ...` (1) and then press `Open` button (2).
+
+<img src="https://i.imgur.com/dXcwVzn.png"/>
 
 ## How to use
 
