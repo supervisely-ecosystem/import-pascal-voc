@@ -142,6 +142,8 @@ class ImporterPascalVOCSegm:
             images_filenames[image_name_noext] = image_path
 
         for ds_name, sample_names in self.src_datasets.items():
+            if len(sample_names) == 0:
+                continue
             if state["mode"] == "public":
                 if ds_name =="trainval" and state["trainval"] is False:
                     continue
