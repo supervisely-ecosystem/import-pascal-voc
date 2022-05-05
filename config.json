@@ -11,5 +11,6 @@
   "task_location": "workspace_tasks",
   "isolate": true,
   "icon": "https://i.imgur.com/pUqLuNq.png",
-  "icon_background": "#FFFFFF"
+  "icon_background": "#FFFFFF",
+  "poster": "https://i.imgur.com/ykox2iS.png"
 }
