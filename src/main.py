@@ -21,7 +21,7 @@ def pascal_downloader(link, save_path, file_name, app_logger):
         download(link, save_path, cache=g.my_app.cache, progress=progress_cb)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
-    shutil.unpack_archive(save_path, g.storage_dir, format="tar")
+    shutil.unpack_archive(save_path, g.storage_dir)
 
 
 @g.my_app.callback("import_pascal_voc")

@@ -78,6 +78,26 @@
 
     <div class="mt10">
         <sly-card title="Output project">
+
+            <sly-field title="Annotation settings">
+                <div class="fflex align-start">
+                    <el-checkbox v-model="state.needMasks" class="mt10 mr10"></el-checkbox>
+                    <sly-field class="mt20"
+                               title="Upload masks"
+                               description="Adds segmentation masks from pascal voc to supervisely">
+                    </sly-field>
+                </div>
+                <div class="fflex align-start">
+                    <el-checkbox v-model="state.needBboxes" class="mt10 mr10"></el-checkbox>
+                    <sly-field class="mt20"
+                               title="Upload bboxes"
+                               description="Adds bboxes from pascal voc `xml` annotation to supervisely">
+                    </sly-field>
+                </div>
+            </sly-field>
+
+            <div style="border-bottom: 1px solid #e3e6ec; margin: 10px 0"></div>
+
             <sly-select-team-workspace :team-id.sync="state.teamId"
                                        :workspace-id.sync="state.workspaceId"></sly-select-team-workspace>
             <sly-field title="Project Name"

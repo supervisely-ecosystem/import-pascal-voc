@@ -2,7 +2,8 @@ import os
 
 import numpy as np
 import supervisely as sly
-from supervisely.io.fs import get_file_name
+from supervisely.io.fs import get_file_name, get_file_name_with_ext
+import xml.etree.ElementTree as ET
 
 import globals as g
 import init_ui_progress
@@ -58,6 +59,9 @@ class ImporterPascalVOCSegm:
         self.imgs_dir = os.path.join(
             g.storage_dir, "VOCdevkit", "VOC2012", "JPEGImages"
         )
+        self.anns_dir = os.path.join(
+            g.storage_dir, "VOCdevkit", "VOC2012", "Annotations"
+        )
         self.segm_dir = os.path.join(
             g.storage_dir, "VOCdevkit", "VOC2012", "SegmentationClass"
         )
@@ -111,7 +115,7 @@ class ImporterPascalVOCSegm:
             self.cls2col = default_classes_colors
 
         obj_classes_list = [
-            sly.ObjClass(name=class_name, geometry_type=sly.Bitmap, color=color)
+            sly.ObjClass(name=class_name, geometry_type=sly.AnyGeometry, color=color)
             for class_name, color in self.cls2col.items()
         ]
         self.obj_classes = self.obj_classes.add_items(obj_classes_list)
@@ -123,7 +127,7 @@ class ImporterPascalVOCSegm:
 
         self.color2class_name = {v: k for k, v in self.cls2col.items()}
 
-    def _get_ann(self, img_path, segm_path, inst_path):
+    def _get_ann(self, img_path, ann_path, segm_path, inst_path, state):
 
         segmentation_img = sly.image.read(segm_path)
 
@@ -154,8 +158,9 @@ class ImporterPascalVOCSegm:
                 colored_img == color, axis=2
             )  # exact match (3-channel img & rgb color)
             bitmap = sly.Bitmap(data=mask)
-            obj_class = sly.ObjClass(name=class_name, geometry_type=sly.Bitmap)
-
+            obj_class = sly.ObjClass(name=class_name, geometry_type=sly.AnyGeometry)
+            if state["needBboxes"]:
+                ann = read_bbox(ann, ann_path, obj_class)
             ann = ann.add_label(sly.Label(bitmap, obj_class))
             #  clear used pixels in mask to check missing colors, see below
             colored_img[mask] = (0, 0, 0)
@@ -210,6 +215,9 @@ class ImporterPascalVOCSegm:
                 except:
                     src_img_path = images_filenames[sample_name]
                 src_img_filename = os.path.basename(src_img_path)
+                ann_path = os.path.join(self.anns_dir, f"{get_file_name_with_ext(src_img_path)}.xml")
+                if not os.path.exists(ann_path):
+                    ann_path = os.path.join(self.anns_dir, f"{get_file_name(src_img_path)}.xml")
                 segm_path = os.path.join(self.segm_dir, sample_name + MASKS_EXTENSION)
 
                 inst_path = None
@@ -221,9 +229,9 @@ class ImporterPascalVOCSegm:
                 if all(
                         (x is None) or os.path.isfile(x)
                         for x in [src_img_path, segm_path, inst_path]
-                ):
+                ) and state["needMasks"]:
                     try:
-                        ann = self._get_ann(src_img_path, segm_path, inst_path)
+                        ann = self._get_ann(src_img_path, ann_path, segm_path, inst_path, state)
                         ds.add_item_file(src_img_filename, src_img_path, ann=ann)
                     except Exception as e:
                         exc_str = str(e)
@@ -236,7 +244,10 @@ class ImporterPascalVOCSegm:
                                 "image": src_img_path,
                             },
                         )
-
+                elif state["needBboxes"] and os.path.exists(ann_path):
+                    ann = sly.Annotation.from_img_path(src_img_path)
+                    ann = read_bbox(ann, ann_path)
+                    ds.add_item_file(src_img_filename, src_img_path, ann=ann)
                 else:
                     ds.add_item_file(src_img_filename, src_img_path, ann=None)
                     # sly.logger.warning("Processing '{}' skipped because no corresponding mask found."
@@ -256,3 +267,21 @@ def start(state):
     importer = ImporterPascalVOCSegm()
     importer.convert(state)
     sly.report_import_finished()
+
+
+def read_bbox(sly_ann, ann_path, obj_class=None):
+    tree = ET.parse(ann_path)
+    root = tree.getroot()
+    for boxes in root.iter('object'):
+        ymin, xmin, ymax, xmax = None, None, None, None
+        ymin = int(boxes.find("bndbox/ymin").text)
+        xmin = int(boxes.find("bndbox/xmin").text)
+        ymax = int(boxes.find("bndbox/ymax").text)
+        xmax = int(boxes.find("bndbox/xmax").text)
+        if obj_class is None:
+            obj_class_name = str(boxes.find("name").text)
+            obj_class = sly.ObjClass(obj_class_name, sly.AnyGeometry)
+
+        rectangle = sly.Rectangle(ymin, xmin, ymax, xmax)
+        sly_ann = sly_ann.add_label(sly.Label(rectangle, obj_class))
+    return sly_ann
