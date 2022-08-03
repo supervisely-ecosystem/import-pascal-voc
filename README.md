@@ -1,5 +1,5 @@
 <div align="center" markdown>
-<img src="https://i.imgur.com/ykox2iS.png"/>
+<img src="https://user-images.githubusercontent.com/48245050/182597823-6a8a6c67-df38-45bf-bce5-b814e79e0ff0.png"/>
 
 # Import Pascal VOC
 
