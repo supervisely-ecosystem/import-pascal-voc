@@ -74,6 +74,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
 
     pascal_importer.start(state)
     proj_dir = os.path.join(g.storage_dir, "SLY_PASCAL")
+    app_logger.info(f"7777777777777777777777777777777777               {os.listdir(proj_dir)}")
 
     files = []
     for r, d, f in os.walk(proj_dir):
