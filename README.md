@@ -89,8 +89,8 @@ Once app is started, new task will appear in workspace tasks. Wait for message `
 3. Select destination `Team`, `Workspace` and `Project name`
 4. Press `Run`
 
-<img src="https://i.imgur.com/ZII5d70.png"/>
+<img src="media/htu2b.png"/>
 
 You can access result project by clicking on it's name under the `Run` button. Resulting project will be saved to selected `Team` -> `Workspace`.
 
-<img src="https://i.imgur.com/WwmeoLV.png"/>
+<img src="media/htu2c.png"/>
