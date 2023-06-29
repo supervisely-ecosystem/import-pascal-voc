@@ -56,14 +56,14 @@ lemon 81 198 170
 
 After running the app you will be redirected to the `Tasks` page.
 
-<img src="https://i.imgur.com/tmmVKlI.png"/>
+<img src="media/htr2.png"/>
 
 
 **Step 3**: Waiting until the app is started.
 
 Once app is started, new task will appear in workspace tasks. Wait for message `Application is started ...` (1) and then press `Open` button (2).
 
-<img src="https://i.imgur.com/dXcwVzn.png"/>
+<img src="media/htr3.png"/>
 
 ## How to use
 
@@ -77,14 +77,14 @@ Once app is started, new task will appear in workspace tasks. Wait for message `
 4. Select destination `Team`, `Workspace` and `Project name`
 5. Press `Run`
 
-<img src="https://i.imgur.com/bBStzR2.png"/>
+<img src="media/htu1.png"/>
 
 **2. To import custom dataset** - select `Custom Data`, upload custom dataset to `Team` -> `Files` copy path to your dataset and paste it to the text input in the app gui.
 
 1. Select `Custom Data`
 2. Input path to your data from `Team` -> `Files`
 
-<img src="https://i.imgur.com/YemDSqY.gif" width="700"/>
+<img src="media/htu2.gif" width="700"/>
 
 3. Select destination `Team`, `Workspace` and `Project name`
 4. Press `Run`
