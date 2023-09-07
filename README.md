@@ -79,7 +79,10 @@ Once app is started, new task will appear in workspace tasks. Wait for message `
 
 <img src="https://i.imgur.com/bBStzR2.png"/>
 
-**2. To import custom dataset** - select `Custom Data`, upload custom dataset to `Team` -> `Files` copy path to your dataset and paste it to the text input in the app gui.
+**2. To import custom dataset** - select `Custom Data`, upload custom dataset to `Team` -> `Files` copy path to your dataset and paste it to the text input in the app GUI.<br>
+⚠️ Note: While importing the custom dataset, the input data must be in the archive, folder input is not currently supported.<br>
+ℹ️ You can download the archive with data example [here](https://github.com/supervisely-ecosystem/import-images/files/12537000/my_images_project.zip).<br>
+
 
 1. Select `Custom Data`
 2. Input path to your data from `Team` -> `Files`
