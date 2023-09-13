@@ -22,20 +22,20 @@
 Converts [Pascal VOC](http://host.robots.ox.ac.uk/pascal/VOC/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) and creates a new project in selected `Team` -> `Workspace`. Backward compatible with [`export-to-pascal`](https://github.com/supervisely-ecosystem/export-to-pascal-voc) app.
 
 
-#### Custom Pascal VOC archive must have the following structure:
+#### Custom Pascal VOC archive or directory must have the following structure:
 ```
 .
-└── custom_pascal.tar
-    └── VOCdevkit
-        └── VOC or VOC2012
-            ├── Annotations
-            ├── ImageSets
-            |   ├── Main   
-            |   └── Segmentation
-            ├── JPEGImages
-            ├── SegmentationClass
-            ├── SegmentationObject
-            └── colors.txt
+└── custom_pascal.tar                    └── custom_pascal_project_dir
+    └── VOCdevkit                            └── VOCdevkit
+        └── VOC or VOC2012                       └── VOC or VOC2012               
+            ├── Annotations                          ├── Annotations              
+            ├── ImageSets                            ├── ImageSets                
+            |   ├── Main                             |   ├── Main                 
+            |   └── Segmentation                     |   └── Segmentation         
+            ├── JPEGImages                           ├── JPEGImages               
+            ├── SegmentationClass                    ├── SegmentationClass        
+            ├── SegmentationObject                   ├── SegmentationObject       
+            └── colors.txt                           └── colors.txt               
 ```
 
 **`colors.txt`** file is custom, and not provided in the original Pascal VOC Dataset. File contains information about instance mask colors associated with classes in Pascal VOC format. This file is required by this app, if you are uploading custom dataset. Each line of `colors.txt` file starts with `class_name` and ends with `RGB` values that represent class color.
