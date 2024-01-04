@@ -27,7 +27,8 @@ def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
         g.api, g.task_id, f"Download {file_name}", sizeb, is_size=True
     )
     if not file_exists(save_path):
-        download(link, save_path, cache=g.my_app.cache, progress=progress_cb)
+        headers = {"User-Agent": "Mozilla/5.0"}
+        download(link, save_path, cache=g.my_app.cache, progress=progress_cb, headers=headers)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
     unpack_archive(save_path, g.storage_dir, remove_junk=True)
