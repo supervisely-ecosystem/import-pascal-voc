@@ -20,7 +20,7 @@ from supervisely.io.fs import (
 )
 
 
-def pascal_downloader(link: str, save_path: str, file_name: str, app_logger, use_cache=True):
+def download_data(link: str, save_path: str, file_name: str, app_logger, use_cache=True):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get("content-length", 0))
     progress_cb = init_ui_progress.get_progress_cb(
@@ -32,16 +32,19 @@ def pascal_downloader(link: str, save_path: str, file_name: str, app_logger, use
         download(link, save_path, cache=cache, progress=progress_cb, headers=headers)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
+    unpack_archive(save_path, g.storage_dir, remove_junk=True)
+
+
+def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
     try:
-        unpack_archive(save_path, g.storage_dir, remove_junk=True)
+        download_data(link, save_path, file_name, app_logger, use_cache=True)
     except shutil.ReadError as e:
-        if use_cache:
-            app_logger.warn(f"Could not unpack {file_name} archive. {repr(e)}")
-            app_logger.info("Trying to download archive again without cache...")
-            silent_remove(save_path)
-            pascal_downloader(link, save_path, file_name, app_logger, use_cache=False)
-        else:
-            raise e
+        app_logger.warn(f"Could not unpack {file_name} archive. {repr(e)}")
+        silent_remove(save_path)
+
+    if not file_exists(save_path):
+        app_logger.info("Will try to download archive without cache")
+        download_data(link, save_path, file_name, app_logger, use_cache=False)
 
 
 def download_original(state: dict, app_logger):
