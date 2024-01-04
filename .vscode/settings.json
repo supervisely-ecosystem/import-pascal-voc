@@ -15,8 +15,12 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   },
+  "isort.args": ["--profile", "black"],
   "debug.inlineValues": "off",
   "python.analysis.typeCheckingMode": "off",
   "python.analysis.autoImportCompletions": false
