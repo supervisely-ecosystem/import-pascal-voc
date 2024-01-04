@@ -20,7 +20,7 @@ from supervisely.io.fs import (
 )
 
 
-def download_data(link: str, save_path: str, file_name: str, app_logger, use_cache=True):
+def download_from_link(link: str, save_path: str, file_name: str, app_logger, use_cache):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get("content-length", 0))
     progress_cb = init_ui_progress.get_progress_cb(
@@ -37,14 +37,14 @@ def download_data(link: str, save_path: str, file_name: str, app_logger, use_cac
 
 def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
     try:
-        download_data(link, save_path, file_name, app_logger, use_cache=True)
+        download_from_link(link, save_path, file_name, app_logger, use_cache=True)
     except shutil.ReadError as e:
         app_logger.warn(f"Could not unpack {file_name} archive. {repr(e)}")
         silent_remove(save_path)
 
     if not file_exists(save_path):
         app_logger.info("Will try to download archive without cache")
-        download_data(link, save_path, file_name, app_logger, use_cache=False)
+        download_from_link(link, save_path, file_name, app_logger, use_cache=False)
 
 
 def download_original(state: dict, app_logger):
