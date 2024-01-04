@@ -6,8 +6,8 @@
         "images"
     ],
     "description": "Import public or custom data in Pascal VOC format to Supervisely",
-    "docker_image": "supervisely/import-export:6.72.128",
-    "instance_version": "6.4.57",
+    "docker_image": "supervisely/import-export:6.72.227",
+    "instance_version": "6.8.54",
     "main_script": "src/main.py",
     "gui_template": "src/gui.html",
     "task_location": "workspace_tasks",
