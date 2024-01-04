@@ -1,4 +1,5 @@
 import os
+import random
 import shutil
 from os.path import basename, isdir, isfile, join, normpath
 
@@ -28,7 +29,7 @@ def download_from_link(link: str, save_path: str, file_name: str, app_logger, us
     )
     cache = g.my_app.cache if use_cache else None
     if not file_exists(save_path):
-        headers = {"User-Agent": "Mozilla/5.0"}
+        headers = {"User-Agent": random.choice(g.user_agents)}
         download(link, save_path, cache=cache, progress=progress_cb, headers=headers)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
