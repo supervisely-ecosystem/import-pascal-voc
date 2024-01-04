@@ -1,24 +1,23 @@
 import os
 import shutil
-
-from os.path import isdir, join, isfile, basename, normpath
+from os.path import basename, isdir, isfile, join, normpath
 
 import requests
-import supervisely as sly
-from supervisely.io.fs import (
-    download,
-    file_exists,
-    get_file_name,
-    unpack_archive,
-    silent_remove,
-    remove_dir,
-    get_subdirs,
-)
 
 import globals as g
 import init_ui
 import init_ui_progress
 import pascal_importer
+import supervisely as sly
+from supervisely.io.fs import (
+    download,
+    file_exists,
+    get_file_name,
+    get_subdirs,
+    remove_dir,
+    silent_remove,
+    unpack_archive,
+)
 
 
 def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):

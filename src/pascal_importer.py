@@ -1,11 +1,11 @@
 import os
 
 import numpy as np
-import supervisely as sly
-from supervisely.io.fs import get_file_name
 
 import globals as g
 import init_ui_progress
+import supervisely as sly
+from supervisely.io.fs import get_file_name
 
 
 # returns mapping: (r, g, b) color -> some (row, col) for each unique color except black
@@ -17,7 +17,7 @@ def get_col2coord(img):
     indxs = np.split(np.argsort(unq_inv), np.cumsum(unq_cnt[:-1]))
     col2indx = {unq[i]: indxs[i][0] for i in range(len(unq))}
     return {
-        (col // (256 ** 2), (col // 256) % 256, col % 256): (indx // w, indx % w)
+        (col // (256**2), (col // 256) % 256, col % 256): (indx // w, indx % w)
         for col, indx in col2indx.items()
         if col != 0
     }
@@ -55,18 +55,10 @@ class ImporterPascalVOCSegm:
         self.lists_dir = os.path.join(
             g.storage_dir, "VOCdevkit", "VOC2012", "ImageSets", "Segmentation"
         )
-        self.imgs_dir = os.path.join(
-            g.storage_dir, "VOCdevkit", "VOC2012", "JPEGImages"
-        )
-        self.segm_dir = os.path.join(
-            g.storage_dir, "VOCdevkit", "VOC2012", "SegmentationClass"
-        )
-        self.inst_dir = os.path.join(
-            g.storage_dir, "VOCdevkit", "VOC2012", "SegmentationObject"
-        )
-        self.colors_file = os.path.join(
-            g.storage_dir, "VOCdevkit", "VOC2012", "colors.txt"
-        )
+        self.imgs_dir = os.path.join(g.storage_dir, "VOCdevkit", "VOC2012", "JPEGImages")
+        self.segm_dir = os.path.join(g.storage_dir, "VOCdevkit", "VOC2012", "SegmentationClass")
+        self.inst_dir = os.path.join(g.storage_dir, "VOCdevkit", "VOC2012", "SegmentationObject")
+        self.colors_file = os.path.join(g.storage_dir, "VOCdevkit", "VOC2012", "colors.txt")
         self.with_instances = os.path.isdir(self.inst_dir)
         sly.logger.info(
             f'Will import data {"with" if self.with_instances else "without"} instance info.'
@@ -79,17 +71,13 @@ class ImporterPascalVOCSegm:
     def _read_datasets(self):
         self.src_datasets = {}
         if not os.path.isdir(self.lists_dir):
-            raise RuntimeError(
-                f"There is no directory {self.lists_dir}, but it is necessary"
-            )
+            raise RuntimeError(f"There is no directory {self.lists_dir}, but it is necessary")
 
         for filename in os.listdir(self.lists_dir):
             if filename.endswith(".txt"):
                 ds_name = os.path.splitext(filename)[0]
                 file_path = os.path.join(self.lists_dir, filename)
-                sample_names = list(
-                    filter(None, map(str.strip, open(file_path, "r").readlines()))
-                )
+                sample_names = list(filter(None, map(str.strip, open(file_path, "r").readlines())))
                 self.src_datasets[ds_name] = sample_names
                 sly.logger.info(
                     f'Found source dataset "{ds_name}" with {len(sample_names)} sample(s).'
@@ -98,14 +86,10 @@ class ImporterPascalVOCSegm:
     def _read_colors(self):
         if os.path.isfile(self.colors_file):
             sly.logger.info("Will try to read segmentation colors from provided file.")
-            in_lines = filter(
-                None, map(str.strip, open(self.colors_file, "r").readlines())
-            )
+            in_lines = filter(None, map(str.strip, open(self.colors_file, "r").readlines()))
             in_splitted = (x.split() for x in in_lines)
             # Format: {name: (R, G, B)}, values [0; 255]
-            self.cls2col = {
-                x[0]: (int(x[1]), int(x[2]), int(x[3])) for x in in_splitted
-            }
+            self.cls2col = {x[0]: (int(x[1]), int(x[2]), int(x[3])) for x in in_splitted}
         else:
             sly.logger.info("Will use default PascalVOC color mapping.")
             self.cls2col = default_classes_colors
@@ -124,7 +108,6 @@ class ImporterPascalVOCSegm:
         self.color2class_name = {v: k for k, v in self.cls2col.items()}
 
     def _get_ann(self, img_path, segm_path, inst_path):
-
         segmentation_img = sly.image.read(segm_path)
 
         if inst_path is not None:
@@ -143,16 +126,12 @@ class ImporterPascalVOCSegm:
             colored_img = segmentation_img
             segmentation_img = segmentation_img.astype(np.uint16)
             colors = list(get_col2coord(segmentation_img).keys())
-            curr_col2cls = {
-                curr_col: self.color2class_name[curr_col] for curr_col in colors
-            }
+            curr_col2cls = {curr_col: self.color2class_name[curr_col] for curr_col in colors}
 
         ann = sly.Annotation.from_img_path(img_path)
 
         for color, class_name in curr_col2cls.items():
-            mask = np.all(
-                colored_img == color, axis=2
-            )  # exact match (3-channel img & rgb color)
+            mask = np.all(colored_img == color, axis=2)  # exact match (3-channel img & rgb color)
             bitmap = sly.Bitmap(data=mask)
             obj_class = sly.ObjClass(name=class_name, geometry_type=sly.Bitmap)
 
@@ -161,25 +140,19 @@ class ImporterPascalVOCSegm:
             colored_img[mask] = (0, 0, 0)
 
         if np.sum(colored_img) > 0:
-            sly.logger.warn(
-                "Not all objects or classes are captured from source segmentation."
-            )
+            sly.logger.warn("Not all objects or classes are captured from source segmentation.")
 
         return ann
 
     def convert(self, state):
-        out_project = sly.Project(
-            os.path.join(g.storage_dir, "SLY_PASCAL"), sly.OpenMode.CREATE
-        )
+        out_project = sly.Project(os.path.join(g.storage_dir, "SLY_PASCAL"), sly.OpenMode.CREATE)
 
         images_filenames = {}
         for image_path in sly.fs.list_files(self.imgs_dir):
             image_name_noext = sly.fs.get_file_name(image_path)
             if image_name_noext in images_filenames:
                 raise RuntimeError(
-                    "Multiple image with the same base name {!r} exist.".format(
-                        image_name_noext
-                    )
+                    "Multiple image with the same base name {!r} exist.".format(image_name_noext)
                 )
             images_filenames[image_name_noext] = image_path
 
@@ -214,13 +187,10 @@ class ImporterPascalVOCSegm:
 
                 inst_path = None
                 if self.with_instances:
-                    inst_path = os.path.join(
-                        self.inst_dir, sample_name + MASKS_EXTENSION
-                    )
+                    inst_path = os.path.join(self.inst_dir, sample_name + MASKS_EXTENSION)
 
                 if all(
-                        (x is None) or os.path.isfile(x)
-                        for x in [src_img_path, segm_path, inst_path]
+                    (x is None) or os.path.isfile(x) for x in [src_img_path, segm_path, inst_path]
                 ):
                     try:
                         ann = self._get_ann(src_img_path, segm_path, inst_path)

@@ -1,16 +1,11 @@
 import os
-import shutil
-
-import requests
-import supervisely as sly
-from supervisely.io.fs import download, file_exists
 
 import globals as g
 import init_ui
 import init_ui_progress
 import pascal_importer
-
 import src.utils as utils
+import supervisely as sly
 
 
 @g.my_app.callback("import_pascal_voc")
@@ -77,4 +72,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sly.main_wrapper("main", main)
+    sly.main_wrapper("main", main, log_for_agent=False)

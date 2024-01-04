@@ -1,22 +1,20 @@
 import os
-import sys
-from pathlib import Path
+
+from dotenv import load_dotenv
 
 import supervisely as sly
-from dotenv import load_dotenv
-from supervisely.app.v1.app_service import AppService
 
 if sly.is_development():
     load_dotenv("local.env")
     load_dotenv(os.path.expanduser("~/supervisely.env"))
 
 
-my_app = AppService()
+my_app = sly.AppService()
 api: sly.Api = my_app.public_api
 
-task_id = my_app.task_id
-team_id = int(os.environ["context.teamId"])
-workspace_id = int(os.environ["context.workspaceId"])
+task_id = sly.env.task_id()
+team_id = sly.env.team_id()
+workspace_id = sly.env.workspace_id()
 
 storage_dir = os.path.join(my_app.data_dir, "pascal_importer")
 sly.fs.mkdir(storage_dir, remove_content_if_exists=True)
