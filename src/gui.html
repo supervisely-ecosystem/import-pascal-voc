@@ -59,6 +59,21 @@
                             </div>
                         </sly-field>
                     </div>
+                    <div class="mt10">
+                        <sly-notification-2 class="mt10" :options="{'type': 'info', 'showTitle': true, 'showIcon': false}">
+                            <span slot="title">
+                                <i class="zmdi zmdi-chart mr5"></i>
+                                The original Pascal VOC 2012 can also be downloaded from DatasetNinja.com:
+                            </span>
+                            <div>
+                                <ul class="mt5">
+                                    <li>Step 1: <a href="https://datasetninja.com/pascal-voc-2012#download" target="_blank">Download Pascal VOC 2012</a> in Supervisely format from DatasetNinja.com</li>
+                                    <li>Step 2: Drag and drop the archive to the  <a href="https://ecosystem.supervisely.com/apps/import-images-in-sly-format" target="_blank">Import images in Supervisely format</a> app modal window and click <strong>Run</strong>.</li>
+                                </ul>
+                            Explore analysis and visualizations of <a href="https://datasetninja.com/pascal-voc-2012" target="_blank">Pascal VOC 2012 in DatasetNinja.com</a>.
+                            </div>
+                        </sly-notification-2>
+                    </div>
                 </sly-field>
 
             </el-tab-pane>

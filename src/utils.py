@@ -1,4 +1,5 @@
 import os
+import random
 import shutil
 from os.path import basename, isdir, isfile, join, normpath
 
@@ -20,17 +21,31 @@ from supervisely.io.fs import (
 )
 
 
-def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
+def download_from_link(link: str, save_path: str, file_name: str, app_logger, use_cache):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get("content-length", 0))
     progress_cb = init_ui_progress.get_progress_cb(
         g.api, g.task_id, f"Download {file_name}", sizeb, is_size=True
     )
+    cache = g.my_app.cache if use_cache else None
     if not file_exists(save_path):
-        download(link, save_path, cache=g.my_app.cache, progress=progress_cb)
+        headers = {"User-Agent": random.choice(g.user_agents)}
+        download(link, save_path, cache=cache, progress=progress_cb, headers=headers)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
     unpack_archive(save_path, g.storage_dir, remove_junk=True)
+
+
+def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
+    try:
+        download_from_link(link, save_path, file_name, app_logger, use_cache=True)
+    except shutil.ReadError as e:
+        app_logger.warn(f"Could not unpack {file_name} archive. {repr(e)}")
+        silent_remove(save_path)
+
+    if not file_exists(save_path):
+        app_logger.info("Will try to download archive without cache")
+        download_from_link(link, save_path, file_name, app_logger, use_cache=False)
 
 
 def download_original(state: dict, app_logger):
