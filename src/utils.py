@@ -40,8 +40,11 @@ def download_from_link(link: str, save_path: str, file_name: str, app_logger, us
         sly.logger.warning(f"File {file_name} is not an archive and will be skipped")
     else:
         sly.logger.info(f"Trying to unpack {file_name} archive to {g.storage_dir}...")
-        unpack_archive(save_path, g.storage_dir, remove_junk=True)
-        sly.logger.info(f"Archive {file_name} has been successfully unpacked")
+        try:
+            unpack_archive(save_path, g.storage_dir, remove_junk=True)
+            sly.logger.info(f"Archive {file_name} has been successfully unpacked")
+        except Exception as e:
+            sly.logger.error(f"There was an error while unpacking {file_name} archive: {e}.")
 
 
 def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
