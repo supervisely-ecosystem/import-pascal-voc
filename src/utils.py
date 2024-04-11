@@ -4,11 +4,6 @@ import shutil
 from os.path import basename, isdir, isfile, join, normpath
 
 import requests
-
-import globals as g
-import init_ui
-import init_ui_progress
-import pascal_importer
 import supervisely as sly
 from supervisely.io.fs import (
     download,
@@ -20,8 +15,14 @@ from supervisely.io.fs import (
     unpack_archive,
 )
 
+import globals as g
+import init_ui
+import init_ui_progress
+import pascal_importer
+
 
 def download_from_link(link: str, save_path: str, file_name: str, app_logger, use_cache):
+    sly.logger.info(f"Downloading from link: {link} to {save_path}")
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get("content-length", 0))
     progress_cb = init_ui_progress.get_progress_cb(
@@ -29,11 +30,21 @@ def download_from_link(link: str, save_path: str, file_name: str, app_logger, us
     )
     cache = g.my_app.cache if use_cache else None
     if not file_exists(save_path):
+        sly.logger.info(f"File {file_name} does not exist. Will download it again.")
         headers = {"User-Agent": random.choice(g.user_agents)}
         download(link, save_path, cache=cache, progress=progress_cb, headers=headers)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
-    unpack_archive(save_path, g.storage_dir, remove_junk=True)
+    sly.logger.info(f"Checking if {file_name} is archive...")
+    if not sly.fs.is_archive(save_path):
+        sly.logger.warning(f"File {file_name} is not an archive and will be skipped")
+    else:
+        sly.logger.info(f"Trying to unpack {file_name} archive to {g.storage_dir}...")
+        try:
+            unpack_archive(save_path, g.storage_dir, remove_junk=True)
+            sly.logger.info(f"Archive {file_name} has been successfully unpacked")
+        except Exception as e:
+            sly.logger.error(f"There was an error while unpacking {file_name} archive: {e}.")
 
 
 def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
