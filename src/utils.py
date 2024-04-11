@@ -35,9 +35,13 @@ def download_from_link(link: str, save_path: str, file_name: str, app_logger, us
         download(link, save_path, cache=cache, progress=progress_cb, headers=headers)
         init_ui_progress.reset_progress(g.api, g.task_id)
         app_logger.info(f"{file_name} has been successfully downloaded")
-    sly.logger.info(f"Trying to unpack {file_name} archive to {g.storage_dir}...")
-    unpack_archive(save_path, g.storage_dir, remove_junk=True)
-    sly.logger.info(f"Archive {file_name} has been successfully unpacked")
+    sly.logger.info(f"Checking if {file_name} is archive...")
+    if not sly.fs.is_archive(save_path):
+        sly.logger.warning(f"File {file_name} is not an archive and will be skipped")
+    else:
+        sly.logger.info(f"Trying to unpack {file_name} archive to {g.storage_dir}...")
+        unpack_archive(save_path, g.storage_dir, remove_junk=True)
+        sly.logger.info(f"Archive {file_name} has been successfully unpacked")
 
 
 def pascal_downloader(link: str, save_path: str, file_name: str, app_logger):
