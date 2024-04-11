@@ -1,8 +1,7 @@
 import os
 
-from dotenv import load_dotenv
-
 import supervisely as sly
+from dotenv import load_dotenv
 
 if sly.is_development():
     load_dotenv("local.env")
@@ -23,8 +22,8 @@ sly.fs.mkdir(storage_dir, remove_content_if_exists=True)
 pascal_train_val_dl_link = (
     "http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar"
 )
-# pascal_test_dl_link = "http://pjreddie.com/media/files/VOC2012test.tar"
-pascal_test_dl_link = "http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2012test.tar"
+pascal_test_dl_link = "http://pjreddie.com/media/files/VOC2012test.tar"
+# pascal_test_dl_link = "http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2012test.tar"
 
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
