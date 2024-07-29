@@ -2,6 +2,7 @@ import os
 
 import supervisely as sly
 from dotenv import load_dotenv
+from workflow import Workflow
 
 if sly.is_development():
     load_dotenv("local.env")
@@ -10,6 +11,7 @@ if sly.is_development():
 
 my_app = sly.AppService()
 api: sly.Api = my_app.public_api
+workflow = Workflow(api)
 
 task_id = sly.env.task_id()
 team_id = sly.env.team_id()

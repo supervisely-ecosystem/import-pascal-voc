@@ -1,11 +1,12 @@
 import os
 
+import supervisely as sly
+
 import globals as g
 import init_ui
 import init_ui_progress
 import pascal_importer
 import src.utils as utils
-import supervisely as sly
 
 
 @g.my_app.callback("import_pascal_voc")
@@ -46,6 +47,7 @@ def import_pascal_voc(api: sly.Api, task_id, context, state, app_logger):
     ]
     api.task.set_fields(task_id, fields)
 
+    g.workflow.add_output(res_project_id)
     api.task.set_output_project(g.my_app.task_id, res_project_id, res_project_name)
     g.my_app.show_modal_window(
         f"'{state['resultingProjectName']}' project has been successfully imported."
