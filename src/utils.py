@@ -1,3 +1,4 @@
+import asyncio
 import os
 import random
 import shutil
@@ -84,19 +85,9 @@ def download_custom(api: sly.Api, state: dict, app_logger):
     if file_info is None:
         is_dir = api.file.dir_exists(g.team_id, remote_path)
         if is_dir:
-            files = api.file.list(g.team_id, remote_path, True, "fileinfo")
-            file_size = sum([f.sizeb for f in files])
-            progress_download_cb = init_ui_progress.get_progress_cb(
-                api,
-                g.task_id,
-                f'Download "{file_path}"',
-                total=file_size,
-                is_size=True,
+            api.file.download_directory_async(
+                g.team_id, remote_path, local_path, semaphore=asyncio.Semaphore(200)
             )
-            api.file.download_directory(
-                g.team_id, remote_path, local_path, progress_cb=progress_download_cb
-            )
-
         else:
             raise FileNotFoundError(f"File or directory {remote_path} not found.")
     else:
