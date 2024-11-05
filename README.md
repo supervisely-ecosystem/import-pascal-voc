@@ -10,16 +10,16 @@
   <a href="#How-To-Use">How To Use</a>
 </p>
   
-[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/import-pascal-voc)
-[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervisely.com/apps/supervisely-ecosystem/import-pascal-voc)
+[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervisely.com/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/import-pascal-voc)
-[![views](https://app.supervise.ly/img/badges/views/supervisely-ecosystem/import-pascal-voc.png)](https://supervise.ly)
-[![runs](https://app.supervise.ly/img/badges/runs/supervisely-ecosystem/import-pascal-voc.png)](https://supervise.ly)
+[![views](https://app.supervisely.com/img/badges/views/supervisely-ecosystem/import-pascal-voc.png)](https://supervisely.com)
+[![runs](https://app.supervisely.com/img/badges/runs/supervisely-ecosystem/import-pascal-voc.png)](https://supervisely.com)
 
 </div>
 
 ## Overview
-Converts [Pascal VOC](http://host.robots.ox.ac.uk/pascal/VOC/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) and creates a new project in selected `Team` -> `Workspace`. Backward compatible with [`export-to-pascal`](https://github.com/supervisely-ecosystem/export-to-pascal-voc) app.
+Converts [Pascal VOC](http://host.robots.ox.ac.uk/pascal/VOC/) format to [Supervisely](https://docs.supervisely.com/data-organization/00_ann_format_navi) and creates a new project in selected `Team` -> `Workspace`. Backward compatible with [`export-to-pascal`](https://github.com/supervisely-ecosystem/export-to-pascal-voc) app.
 
 
 #### Custom Pascal VOC archive or directory must have the following structure:
@@ -50,7 +50,7 @@ lemon 81 198 170
 **Action and Layout Classification Image Sets are not supported by import application.**
 
 ## How To Run 
-**Step 1**: Add app to your team from [Ecosystem](https://ecosystem.supervise.ly/apps/import-pascal-voc) if it is not there.
+**Step 1**: Add app to your team from [Ecosystem](https://ecosystem.supervisely.com/apps/import-pascal-voc) if it is not there.
 
 **Step 2**: Run app from `Team` -> `Plugins & Apps` page.
 
