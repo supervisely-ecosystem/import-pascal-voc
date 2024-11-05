@@ -86,6 +86,7 @@ def download_custom(api: sly.Api, state: dict, app_logger):
         is_dir = api.file.dir_exists(g.team_id, remote_path)
         if is_dir:
             loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             loop.run_until_complete(
                 api.file.download_directory_async(
                     g.team_id, remote_path, local_path, semaphore=asyncio.Semaphore(200)
