@@ -76,7 +76,7 @@ def download_original(state: dict, app_logger):
 
 def download_custom(api: sly.Api, state: dict, app_logger):
     remote_path: str = state["customDataPath"]
-    remote_path = f'/{remote_path.strip().lstrip("/").rstrip("/")}'  # normalize team files path
+    remote_path = f'{remote_path.strip().lstrip("/").rstrip("/")}'  # normalize team files path
 
     file_path = basename(normpath(remote_path))
     local_path = join(g.storage_dir, file_path)
