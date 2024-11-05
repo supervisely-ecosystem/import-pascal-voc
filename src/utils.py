@@ -85,8 +85,11 @@ def download_custom(api: sly.Api, state: dict, app_logger):
     if file_info is None:
         is_dir = api.file.dir_exists(g.team_id, remote_path)
         if is_dir:
-            api.file.download_directory_async(
-                g.team_id, remote_path, local_path, semaphore=asyncio.Semaphore(200)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(
+                api.file.download_directory_async(
+                    g.team_id, remote_path, local_path, semaphore=asyncio.Semaphore(200)
+                )
             )
         else:
             raise FileNotFoundError(f"File or directory {remote_path} not found.")
