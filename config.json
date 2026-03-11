@@ -3,7 +3,7 @@
   "type": "app",
   "categories": ["import", "images"],
   "description": "Import public or custom data in Pascal VOC format to Supervisely",
-  "docker_image": "supervisely/import-pascal-voc:6.73.542",
+  "docker_image": "supervisely/import-pascal-voc:6.73.544",
   "instance_version": "6.15.40",
   "main_script": "src/main.py",
   "gui_template": "src/gui.html",
