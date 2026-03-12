@@ -7,6 +7,7 @@ import init_ui
 import init_ui_progress
 import pascal_importer
 import src.utils as utils
+import asyncio
 
 
 @g.my_app.callback("import_pascal_voc")
@@ -70,6 +71,7 @@ def main():
 
     init_ui.init(data, state)
     init_ui_progress.init_progress(data, state)
+    asyncio.set_event_loop(asyncio.new_event_loop())
     g.my_app.run(data=data, state=state)
 
 
