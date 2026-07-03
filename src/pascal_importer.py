@@ -13,7 +13,10 @@ def get_col2coord(img):
     img = img.astype(np.int32)
     h, w = img.shape[:2]
     colhash = img[:, :, 0] * 256 * 256 + img[:, :, 1] * 256 + img[:, :, 2]
-    unq, unq_inv, unq_cnt = np.unique(colhash, return_inverse=True, return_counts=True)
+    # flatten before np.unique: since numpy 2.0 return_inverse keeps the input shape
+    unq, unq_inv, unq_cnt = np.unique(
+        colhash.reshape(-1), return_inverse=True, return_counts=True
+    )
     indxs = np.split(np.argsort(unq_inv), np.cumsum(unq_cnt[:-1]))
     col2indx = {unq[i]: indxs[i][0] for i in range(len(unq))}
     return {
@@ -144,7 +147,78 @@ class ImporterPascalVOCSegm:
 
         return ann
 
+    def _is_nested_structure(self):
+        # Nested exports mirror the dataset hierarchy as subfolders inside JPEGImages.
+        return any(
+            os.path.isdir(os.path.join(self.imgs_dir, entry))
+            for entry in os.listdir(self.imgs_dir)
+        )
+
+    def convert_nested(self, state):
+        out_project = sly.Project(os.path.join(g.storage_dir, "SLY_PASCAL"), sly.OpenMode.CREATE)
+
+        total_images = sum(len(files) for _, _, files in os.walk(self.imgs_dir))
+        progress_items_cb = init_ui_progress.get_progress_cb(
+            g.api, g.task_id, "Converting nested datasets", total_images
+        )
+
+        for root, dirs, files in os.walk(self.imgs_dir):
+            dirs.sort()
+            rel = os.path.relpath(root, self.imgs_dir)
+            if rel == ".":
+                if files:
+                    sly.logger.warning(
+                        f"{len(files)} file(s) found directly in JPEGImages root will be skipped: "
+                        "in nested mode every image must belong to a dataset folder."
+                    )
+                continue
+
+            parts = rel.split(os.sep)
+            # Local project layout stores a child dataset under "<parent>/datasets/<child>"
+            ds_path = parts[0]
+            for part in parts[1:]:
+                ds_path = os.path.join(ds_path, "datasets", part)
+            ds = out_project.create_dataset(parts[-1], ds_path)
+
+            for file in sorted(files):
+                img_path = os.path.join(root, file)
+                sample_name = get_file_name(file)
+                segm_path = os.path.join(self.segm_dir, rel, sample_name + MASKS_EXTENSION)
+                inst_path = None
+                if self.with_instances:
+                    inst_path = os.path.join(self.inst_dir, rel, sample_name + MASKS_EXTENSION)
+                    if not os.path.isfile(inst_path):
+                        inst_path = None
+
+                if os.path.isfile(segm_path):
+                    try:
+                        ann = self._get_ann(img_path, segm_path, inst_path)
+                        ds.add_item_file(file, img_path, ann=ann)
+                    except Exception as e:
+                        exc_str = str(e)
+                        sly.logger.warn(
+                            f"Input sample skipped due to error: {exc_str}",
+                            exc_info=True,
+                            extra={
+                                "exc_str": exc_str,
+                                "dataset_name": rel,
+                                "image": img_path,
+                            },
+                        )
+                else:
+                    ds.add_item_file(file, img_path, ann=None)
+                progress_items_cb(1)
+            sly.logger.info(f'Dataset "{rel}" samples processing is done.')
+
+        out_meta = sly.ProjectMeta(obj_classes=self.obj_classes)
+        out_project.set_meta(out_meta)
+        sly.logger.info("Pascal VOC nested samples processing is done.")
+
     def convert(self, state):
+        if state["mode"] == "custom" and self._is_nested_structure():
+            sly.logger.info("Nested dataset structure detected, hierarchy will be preserved.")
+            return self.convert_nested(state)
+
         out_project = sly.Project(os.path.join(g.storage_dir, "SLY_PASCAL"), sly.OpenMode.CREATE)
 
         images_filenames = {}
