@@ -38,6 +38,30 @@ Converts [Pascal VOC](http://host.robots.ox.ac.uk/pascal/VOC/) format to [Superv
             └── colors.txt                           └── colors.txt               
 ```
 
+#### Nested dataset structure (optional)
+
+The app also supports archives exported with the `Preserve nested dataset structure` option of the [`Export to Pascal VOC`](https://github.com/supervisely-ecosystem/export-to-pascal-voc) app. If `JPEGImages` contains subfolders, the layout is detected automatically and the folder tree is recreated as a nested dataset hierarchy in Supervisely:
+
+```
+└── VOCdevkit
+    └── VOC or VOC2012
+        ├── JPEGImages
+        |   ├── category_a                   ← becomes dataset "category_a"
+        |   |   ├── img_001.jpg
+        |   |   └── subcategory_a1           ← becomes its nested dataset
+        |   |       └── img_002.jpg
+        |   └── category_b                   ← dataset levels without images are supported
+        |       └── subcategory_b1
+        |           └── img_003.jpg
+        ├── Annotations                      ← mirrors the same folder tree
+        ├── SegmentationClass                ← mirrors the same folder tree
+        ├── SegmentationObject               ← mirrors the same folder tree
+        ├── ImageSets
+        └── colors.txt
+```
+
+Flat archives (no subfolders in `JPEGImages`) are imported exactly as before: one dataset per `ImageSets/Segmentation` list file.
+
 **`colors.txt`** file is custom, and not provided in the original Pascal VOC Dataset. File contains information about instance mask colors associated with classes in Pascal VOC format. This file is required by this app, if you are uploading custom dataset. Each line of `colors.txt` file starts with `class_name` and ends with `RGB` values that represent class color.
 
 **`colors.txt`** example:
